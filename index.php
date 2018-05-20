@@ -2,20 +2,99 @@
 <html>
 <head>
 	<title>xx</title>
+
+
+	<style>
+	.gpa{
+		text-align: center;
+	}
+	.form{
+		align-content: center;
+		margin:10px 10px;
+	}
+	input[type=text], select {
+    width: 20%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 10%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+		.split {
+  height: 20%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+.table1 {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;.
+  overflow-x: hidden;
+  background-color: lightblue;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+  overflow-x: hidden;
+  background-color: orange;
+
+}
+body{
+	background-color: yellow;
+}
+
+.bottom{
+	padding-top: 5%;
+	background-color: yellow;
+}
+
+	</style>
 </head>
 
 
 <body>
-<h1>ADD STUDENTS</h1>
+<div class="split left">
+	<div class="section" id="section">
+<h1>  ADD STUDENTS</h1>
 
-<div class="stuID"><h2>Student ID will appeare here</h2></div>
-<form action="" method="POST">
-	<span>Full Name : </span><input type="text" name="stuName">
-	<span>Address : </span><input type="text" name="stuAddress">
-	<span>Contact : </span><input type="text" name="stuContact">
-	<input type="submit" name="submitclick" value="Submit!" onclick="showStudents()">
-</form>
-<script type="text/javascript">showStudents(str)</script>
+
+	<form action="" method="POST" class="form">
+		<span>Full Name : </span><input type="text" name="stuName" required>
+		<span>Address : </span><input type="text" name="stuAddress" required>
+		<span>Contact : </span><input type="text" name="stuContact" required>
+		<input type="submit" name="submitclick" value="Submit!" onclick="showStudents()">
+	</form>
+		<input type="button" name="submitclick" value="Submit!" onclick="showGrades()">
+</div>
+</div>
+
 <?php
 include 'config.php';
 
@@ -37,15 +116,22 @@ if(isset($_POST['submitclick'])){
 
 	if ($conn->query($sql) === TRUE) {
 	    $last_id = $conn->insert_id;
-	    echo "New record created successfully. Last inserted ID is: " . $last_id;
+	   // echo "New record created successfully. Last inserted ID is: " . $last_id;
 	}
 	else{
 		    echo "Error: " . $sql . "<br>" . $conn->error;
-	    echo "<script type='text/javascript'>alert('SQL FAIL');</script>";
+	   // echo "<script type='text/javascript'>alert('SQL FAIL');</script>";
 	}
 }
 ?>
-<div class="table1" id="table1"><?php 
+<br><h2>
+<div class="split right" id="gpa" class="gpa">
+	GPA Should come here!
+</div></h2>
+
+<br><br><br><br><br><br>
+<div class="bottom">
+<div class="table1" id="table1" onclick="check(event)"><?php 
 
 if (!$conn) {
     die('Could not connect: ' . mysqli_error($conn));
@@ -72,6 +158,7 @@ while($row = mysqli_fetch_array($result)) {
 echo "</table>";
 ?>
 </div>
+</div>
 <style>
 table {
     width: 100%;
@@ -87,21 +174,59 @@ th {text-align: left;}
 </style>
 
 <script>
-function showStudents(str) { 
-  if (window.XMLHttpRequest) {
-    // code for IE7+, Firefox, Chrome, Opera, Safari
-    xmlhttp=new XMLHttpRequest();
-  } else { // code for IE6, IE5
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  xmlhttp.onreadystatechange=function() {
-    if (this.readyState==4 && this.status==200) {
-      document.getElementById("table1").innerHTML=this.responseText;
-    }
-  }
-  xmlhttp.open("GET","getStu.php?q="+str,true);
-  xmlhttp.send();
-}
+	function showGrades(str){
+		  if (window.XMLHttpRequest) {
+		    // code for IE7+, Firefox, Chrome, Opera, Safari
+		    xmlhttp=new XMLHttpRequest();
+		  } else { // code for IE6, IE5
+		    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		  }
+		  xmlhttp.onreadystatechange=function() {
+		    if (this.readyState==4 && this.status==200) {
+		      document.getElementById("table1").innerHTML=this.responseText;
+		    }
+		  }
+		  xmlhttp.open("GET","getGrade.php?q="+str,true);
+		  xmlhttp.send();
+
+	}
+
+
+	function check(event){
+
+		 // alert(event.target.innerText); //current cell
+   		// alert(event.target.parentNode.innerText); //Current row.
+   		   if (window.XMLHttpRequest) {
+		    // code for IE7+, Firefox, Chrome, Opera, Safari
+		    xmlhttp=new XMLHttpRequest();
+		  } else { // code for IE6, IE5
+		    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		  }
+		  xmlhttp.onreadystatechange=function() {
+		    if (this.readyState==4 && this.status==200) {
+		      document.getElementById("gpa").innerHTML=this.responseText;
+		    }
+		  }
+		  xmlhttp.open("GET","getGpa.php?q="+event.target.innerText,true);
+		  xmlhttp.send();
+			};
+	function showStudents(str) { 
+
+			// alert("showStudents");
+		  if (window.XMLHttpRequest) {
+		    // code for IE7+, Firefox, Chrome, Opera, Safari
+		    xmlhttp=new XMLHttpRequest();
+		  } else { // code for IE6, IE5
+		    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		  }
+		  xmlhttp.onreadystatechange=function() {
+		    if (this.readyState==4 && this.status==200) {
+		      document.getElementById("table1").innerHTML=this.responseText;
+		    }
+		  }
+		  xmlhttp.open("GET","getStu.php?q="+str,true);
+		  xmlhttp.send();
+	}
 </script>
 </body>
 </html>

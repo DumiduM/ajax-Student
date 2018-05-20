@@ -19,7 +19,7 @@ th {text-align: left;}
 
 <?php
 include "config.php";
-$q = intval($_GET['q']);
+// $q = intval($_GET['q']);
 
 if (!$conn) {
     die('Could not connect: ' . mysqli_error($conn));
