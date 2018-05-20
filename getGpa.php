@@ -13,15 +13,15 @@ $row = mysqli_fetch_array($result);
 $name = $row['stuName'];
 $contact = $row['stuContact'];
 echo "Student Name : " . $name . "<br>"; 
-
+echo "Contact : 0" . $contact;
 
 $sql2 = "SELECT GPA FROM records WHERE studentID = '".$q."'";
 $result2 = mysqli_query($conn,$sql2);
 
 $row2 = mysqli_fetch_array($result2);
 $gpa = $row2['GPA'];
-echo "Student GPA : " . $gpa . "<br>";
-echo "Contact : " . $contact;
+echo "<br>". "Student GPA : " . $gpa;
+
 
 if ($gpa==""){
 	echo "no GPA added!";

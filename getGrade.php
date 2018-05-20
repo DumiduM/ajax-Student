@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Studext AJAX</title>
+	<title>xx</title>
 
 
 	<style>
@@ -13,7 +13,7 @@
 		margin:10px 10px;
 	}
 	input[type=text], select {
-    width: 20%;
+    width: 10%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -56,7 +56,7 @@ input[type=submit]:hover {
 .left {
   left: 0;.
   overflow-x: hidden;
-  background-color: lightblue;
+  background-color: lightgreen;
 }
 
 /* Control the right side */
@@ -82,37 +82,48 @@ body{
 <body>
 <div class="split left">
 	<div class="section" id="section">
-<h1>  ADD STUDENTS</h1>
+<h1>  ADD MARKS</h1>
 
 
 	<form action="" method="POST" class="form">
-		<span>Full Name : </span><input type="text" name="stuName" required>
-		<span>Address : </span><input type="text" name="stuAddress" required>
-		<span>Contact : </span><input type="text" name="stuContact" required>
-		<input type="submit" name="submitclick" value="Submit!" onclick="showStudents()">
+		<span>Student ID : </span><input type="text" name="id" required>
+		<span>Advaned Web : </span><input type="text" name="sb1" required>
+		<span>Software Eng : </span><input type="text" name="sb2" required>
+		<span>Data Science : </span><input type="text" name="sb3" required>
+		<input type="submit" name="submitclick2" value="Submit!">
 	</form>
-		<input type="button" name="submitclick" value="Submit!" onclick="showGrades()">
+		<input type="button" name="move" value="Go Back" onClick="document.location.href='index.php'" >
+		<!-- onClick="document.location.href='index.php'"  -->
 </div>
 </div>
 
 <?php
 include 'config.php';
-
-if(isset($_POST['submitclick'])){
-
-	$stuName=$_POST['stuName'];
-  	$stuAddress=$_POST['stuAddress'];
-  	$stuContact=$_POST['stuContact'];
+echo "<script type='text/javascript'>alert('On TO it!');</script>";
+if(isset($_POST['submitclick2'])){
+	echo "<script type='text/javascript'>alert('On it!');</script>";
+	
+	$id=$_POST['id'];
+	$sb1=$_POST['sb1'];
+  	$sb2=$_POST['sb2'];
+  	$sb3=$_POST['sb3'];
   
+  	if ($_POST['sb1']=="A" || $_POST['sb2']=="A" || $_POST['sb3']=="A")
+  		$val1 = "4";
+  	if ($_POST['sb1']=="B" || $_POST['sb2']=="B" || $_POST['sb3']=="B")
+  		$val2 = "3.3";
+  	if ($_POST['sb1']=="C" || $_POST['sb2']=="C" || $_POST['sb3']=="C")
+  		$val3 = "2.7";
 
+  	$gpa = ($val1*"3"+$val2*"3"+$val3*"2")/"8";
 
 	if(!$conn){
 		die('Could not connect: '. mysql_error());
 		echo "<script type='text/javascript'>alert('Could not connect');</script>";
 	}
 	//$sql = "SELECT MAX(studentID) FROM student";
-	$sql = "INSERT INTO student (stuName, stuAddress, stuContact)
-	VALUES ('$stuName', '$stuAddress', '$stuContact')";
+	$sql = "INSERT INTO records (studentID,GPA,web,data,ai)
+	VALUES ('$id', '$gpa', '$sb1', '$sb2', '$sb3')";
 
 	if ($conn->query($sql) === TRUE) {
 	    $last_id = $conn->insert_id;
@@ -124,57 +135,9 @@ if(isset($_POST['submitclick'])){
 	}
 }
 ?>
-<br><h2>
-<div class="split right" id="gpa" class="gpa">
-	GPA Should come here!
-</div></h2>
-
-<br><br><br><br><br><br>
-<div class="bottom">
-<div class="table1" id="table1" onclick="check(event)"><?php 
-
-if (!$conn) {
-    die('Could not connect: ' . mysqli_error($conn));
-}
-
-$sql="SELECT * FROM student";
-$result = mysqli_query($conn,$sql);
-
-echo "<table>
-<tr>
-<th>Student ID</th>
-<th>Name</th>
-<th>Address</th>
-<th>Contact</th>
-</tr>";
-while($row = mysqli_fetch_array($result)) {
-    echo "<tr>";
-    echo "<td>" . $row['studentID'] . "</td>";
-    echo "<td>" . $row['stuName'] . "</td>";
-    echo "<td>" . $row['stuAddress'] . "</td>";
-    echo "<td>" . $row['stuContact'] . "</td>";
-    echo "</tr>";
-}
-echo "</table>";
-?>
-</div>
-</div>
-<style>
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table, td, th {
-    border: 1px solid black;
-    padding: 5px;
-}
-
-th {text-align: left;}
-</style>
 
 <script>
-	function showGrades(str){
+	function showStudents(str){
 		  if (window.XMLHttpRequest) {
 		    // code for IE7+, Firefox, Chrome, Opera, Safari
 		    xmlhttp=new XMLHttpRequest();
@@ -224,9 +187,10 @@ th {text-align: left;}
 		      document.getElementById("table1").innerHTML=this.responseText;
 		    }
 		  }
-		  xmlhttp.open("GET","getStu.php?q="+str,true);
+		  xmlhttp.open("GET","getTable.php?q="+str,true);
 		  xmlhttp.send();
 	}
+	
 </script>
 </body>
 </html>
