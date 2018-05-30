@@ -85,44 +85,21 @@ body{
 <h1>  ADD STUDENTS</h1>
 
 
-	<form action="" method="POST" class="form">
+	<form action="addstu.php" method="POST" id="form" class="form">
 		<span>Full Name : </span><input type="text" name="stuName" required>
 		<span>Address : </span><input type="text" name="stuAddress" required>
 		<span>Contact : </span><input type="text" name="stuContact" required>
-		<input type="submit" name="submitclick" value="Submit!" onclick="showStudents()">
+		<input type="button" id="1sub" name="submitclick" value="Submit!" onclick="showStudents()">
+		<button id = "sub">next</button>
 	</form>
 		<input type="button" name="submitclick" value="Submit!" onclick="showGrades()">
 </div>
 </div>
+<span id= "result"></span>
 
 <?php
 include 'config.php';
 
-if(isset($_POST['submitclick'])){
-
-	$stuName=$_POST['stuName'];
-  	$stuAddress=$_POST['stuAddress'];
-  	$stuContact=$_POST['stuContact'];
-  
-
-
-	if(!$conn){
-		die('Could not connect: '. mysql_error());
-		echo "<script type='text/javascript'>alert('Could not connect');</script>";
-	}
-	//$sql = "SELECT MAX(studentID) FROM student";
-	$sql = "INSERT INTO student (stuName, stuAddress, stuContact)
-	VALUES ('$stuName', '$stuAddress', '$stuContact')";
-
-	if ($conn->query($sql) === TRUE) {
-	    $last_id = $conn->insert_id;
-	   // echo "New record created successfully. Last inserted ID is: " . $last_id;
-	}
-	else{
-		    echo "Error: " . $sql . "<br>" . $conn->error;
-	   // echo "<script type='text/javascript'>alert('SQL FAIL');</script>";
-	}
-}
 ?>
 <br><h2>
 <div class="split right" id="gpa" class="gpa">
@@ -173,60 +150,7 @@ table, td, th {
 th {text-align: left;}
 </style>
 
-<script>
-	function showGrades(str){
-		  if (window.XMLHttpRequest) {
-		    // code for IE7+, Firefox, Chrome, Opera, Safari
-		    xmlhttp=new XMLHttpRequest();
-		  } else { // code for IE6, IE5
-		    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		  }
-		  xmlhttp.onreadystatechange=function() {
-		    if (this.readyState==4 && this.status==200) {
-		      document.getElementById("section").innerHTML=this.responseText;
-		    }
-		  }
-		  xmlhttp.open("GET","getGrade.php?q="+str,true);
-		  xmlhttp.send();
-
-	}
-
-
-	function check(event){
-
-		 // alert(event.target.innerText); //current cell
-   		// alert(event.target.parentNode.innerText); //Current row.
-   		   if (window.XMLHttpRequest) {
-		    // code for IE7+, Firefox, Chrome, Opera, Safari
-		    xmlhttp=new XMLHttpRequest();
-		  } else { // code for IE6, IE5
-		    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		  }
-		  xmlhttp.onreadystatechange=function() {
-		    if (this.readyState==4 && this.status==200) {
-		      document.getElementById("gpa").innerHTML=this.responseText;
-		    }
-		  }
-		  xmlhttp.open("GET","getGpa.php?q="+event.target.innerText,true);
-		  xmlhttp.send();
-			};
-	function showStudents(str) { 
-
-			// alert("showStudents");
-		  if (window.XMLHttpRequest) {
-		    // code for IE7+, Firefox, Chrome, Opera, Safari
-		    xmlhttp=new XMLHttpRequest();
-		  } else { // code for IE6, IE5
-		    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		  }
-		  xmlhttp.onreadystatechange=function() {
-		    if (this.readyState==4 && this.status==200) {
-		      document.getElementById("table1").innerHTML=this.responseText;
-		    }
-		  }
-		  xmlhttp.open("GET","getStu.php?q="+str,true);
-		  xmlhttp.send();
-	}
-</script>
+<script src="script/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="script/script.js" type="text/javascript"></script>
 </body>
 </html>
